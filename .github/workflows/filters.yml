@@ -24,6 +24,8 @@ jobs:
   build:
     name: Build filters
     runs-on: ubuntu-latest
+    env:
+      HAS_EXPO_TOKEN: ${{ secrets.EXPO_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -40,7 +42,7 @@ jobs:
       # Latest finished App Store (TestFlight) build of the app, so installed copies can say "new version
       # available". Needs an EXPO_TOKEN secret; without it the step is skipped and release.json is not published.
       - name: Write release.json from EAS
-        if: ${{ secrets.EXPO_TOKEN != '' }}
+        if: ${{ env.HAS_EXPO_TOKEN == 'true' }}
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         working-directory: eas
