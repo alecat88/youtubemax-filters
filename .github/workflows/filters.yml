@@ -29,7 +29,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Build filter list
         run: node filters/build-filters.mjs --previous-url https://alecat88.github.io/youtubemax-filters/filters.json

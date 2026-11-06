@@ -3,7 +3,7 @@
  * build-filters.mjs — compiles Brave's default ad-block filter lists into a
  * compact JSON consumed by src/lib/adblock/engine.ts.
  *
- * Node 22+ ESM, no npm dependencies (global fetch only).
+ * Node 24+ ESM, no npm dependencies (global fetch only).
  *
  * Usage:
  *   node filters/build-filters.mjs [--out <dir>] [--snapshot <path>] [--previous-url <url>]
@@ -207,7 +207,7 @@ function parseArgs(argv) {
 async function fetchText(url, timeoutMs = FETCH_TIMEOUT_MS) {
   const res = await fetch(url, {
     signal: AbortSignal.timeout(timeoutMs),
-    headers: { 'user-agent': 'YouTubeMax-filters-builder/1 (+https://github.com/LaughTechnologies/YouTubeMax)' },
+    headers: { 'user-agent': 'YouTubeMax-filters-builder/1 (+https://github.com/alecat88/youtubemax-filters)' },
     redirect: 'follow',
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
