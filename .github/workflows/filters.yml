@@ -2,7 +2,7 @@ name: Build and publish ad filters
 
 on:
   schedule:
-    - cron: '17 */6 * * *'
+    - cron: '17 * * * *'   # hourly: filters change rarely, but release.json should notice a new TestFlight build soon
   workflow_dispatch:
   push:
     branches: [main]
@@ -36,6 +36,23 @@ jobs:
 
       - name: Test engine against the built list
         run: node filters/test-engine.mjs
+
+      # Latest finished App Store (TestFlight) build of the app, so installed copies can say "new version
+      # available". Needs an EXPO_TOKEN secret; without it the step is skipped and release.json is not published.
+      - name: Write release.json from EAS
+        if: ${{ secrets.EXPO_TOKEN != '' }}
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        working-directory: eas
+        run: |
+          npx --yes eas-cli@latest build:list --platform ios --status finished --distribution store --limit 1 --json --non-interactive > builds.json
+          node -e '
+            const b = JSON.parse(require("fs").readFileSync("builds.json", "utf8"))[0];
+            if (!b) { console.log("no finished store build yet"); process.exit(0); }
+            const out = { version: b.appVersion, buildNumber: String(b.appBuildVersion), runtimeVersion: b.runtimeVersion, buildId: b.id, profile: b.buildProfile, completedAt: b.completedAt, checkedAt: new Date().toISOString() };
+            require("fs").writeFileSync("../filters/dist/release.json", JSON.stringify(out, null, 2) + "\n");
+            console.log(out);
+          '
 
       - uses: actions/upload-pages-artifact@v3
         with:

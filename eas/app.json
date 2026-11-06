@@ -1,0 +1,8 @@
+{
+  "expo": {
+    "name": "youtubemax-filters",
+    "slug": "YouTubeMax",
+    "owner": "laugh-technologies-ltd",
+    "extra": { "eas": { "projectId": "fe1d2f44-50d1-4c0d-92ac-9b263c06989b" } }
+  }
+}

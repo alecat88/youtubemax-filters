@@ -5,6 +5,7 @@ consumed by the YouTubeMax app's request filter, and publishes it to GitHub Page
 
 - `https://alecat88.github.io/youtubemax-filters/filters.json` — the compiled list
 - `https://alecat88.github.io/youtubemax-filters/version.json` — version, size and counts (polled by the app)
+- `https://alecat88.github.io/youtubemax-filters/release.json` — latest finished TestFlight build (version, build number), written from EAS when the repo has an `EXPO_TOKEN` secret; the app shows a "new version" banner when it is newer than the installed one
 
 `filters/build-filters.mjs` does the build (Node 22, no dependencies); `filters/test-engine.mjs`
 runs the app's `src/lib/adblock/engine.ts` against the result before publishing. The engine file is a
